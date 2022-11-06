@@ -25,3 +25,8 @@ steps:
       dir
       $(Build.SourcesDirectory)\premake\premake5.exe vs2022
     failOnStderr: true
+- task: MSBuild@1
+  inputs:
+    solution: 'build/rive.sln'
+    msbuildArchitecture: 'x64'
+    configuration: 'Release'
