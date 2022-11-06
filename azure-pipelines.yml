@@ -12,10 +12,9 @@ pool:
 
 steps:
 - task: PowerShell@2
-- task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
-      wget https://github.com/premake/premake-core/releases/download/v5.0.0-beta1/premake-5.0.0-beta1-windows.zip -OutFile premake.zip
-      Expand-Archive -Force premake.zip premake/
+      wget https://github.com/premake/premake-core/releases/download/v5.0.0-beta1/premake-5.0.0-beta1-windows.zip -OutFile $(Build.SourcesDirectory)/premake.zip
+      Expand-Archive -Force $(Build.SourcesDirectory)/premake.zip $(Build.SourcesDirectory)/premake/
     failOnStderr: true
