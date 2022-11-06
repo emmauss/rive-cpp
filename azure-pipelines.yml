@@ -16,5 +16,6 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      wget https://github.com/premake/premake-core/releases/download/v5.0.0-beta1/premake-5.0.0-beta1-windows.zip -OutFIle premake.zip
+      wget https://github.com/premake/premake-core/releases/download/v5.0.0-beta1/premake-5.0.0-beta1-windows.zip -OutFile premake.zip
       Expand-Archive -Force premake.zip premake/
+    failOnStderr: true
