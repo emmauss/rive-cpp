@@ -8,6 +8,52 @@ trigger:
 - master
 
 jobs:
+- job: Windows
+  pool:
+    vmImage: windows-2022
+
+  steps:
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        wget https://github.com/premake/premake-core/releases/download/v5.0.0-beta1/premake-5.0.0-beta1-windows.zip -OutFile $(Build.SourcesDirectory)/premake.zip
+        Expand-Archive -Force $(Build.SourcesDirectory)/premake.zip $(Build.SourcesDirectory)/premake/
+      failOnStderr: true
+  - task: CmdLine@2
+    inputs:
+      script: |
+        cd build
+        dir
+        $(Build.SourcesDirectory)\premake\premake5.exe vs2022
+      failOnStderr: true
+  - task: MSBuild@1
+    inputs:
+      solution: 'build/rive.sln'
+      msbuildArchitecture: 'x64'
+      configuration: 'Release'
+  - task: MSBuild@1
+    inputs:
+      solution: 'build/rive.sln'
+      msbuildArchitecture: 'x86'
+      configuration: 'Release'
+
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-22.04'
+  steps:
+  - task: CmdLine@2
+    inputs:
+      script: |
+        wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha16/premake-5.0.0-alpha16-linux.tar.gz
+        tar -xvf premake-5.0.0-alpha16-linux.tar.gz
+        sudo chmod a+x premake5
+        sudo mv premake5 /usr/local/bin
+        ./build.sh clean
+        ./build.sh
+        ./build.sh release
+      failOnStderr: true
+
 - job: MacOS
   pool:
     vmImage: 'macos-12'
