@@ -30,3 +30,8 @@ steps:
     solution: 'build/rive.sln'
     msbuildArchitecture: 'x64'
     configuration: 'Release'
+- task: MSBuild@1
+  inputs:
+    solution: 'build/rive.sln'
+    msbuildArchitecture: 'x86'
+    configuration: 'Release'
