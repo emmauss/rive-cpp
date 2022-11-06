@@ -21,6 +21,7 @@ steps:
 - task: CmdLine@2
   inputs:
     script: |
+      cd build
       dir
       $(Build.SourcesDirectory)\premake\premake5.exe vs2022
     failOnStderr: true
