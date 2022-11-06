@@ -52,7 +52,6 @@ jobs:
         ./build.sh clean
         ./build.sh
         ./build.sh release
-      failOnStderr: true
 
 - job: MacOS
   pool:
@@ -67,4 +66,3 @@ jobs:
         sudo mv premake5 /usr/local/bin
         ./build.sh
         ./build.sh release
-      failOnStderr: true
