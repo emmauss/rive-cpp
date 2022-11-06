@@ -8,18 +8,17 @@ trigger:
 - master
 
 jobs:
-- job: Linux
+- job: MacOS
   pool:
-    vmImage: 'ubuntu-20.04'
+    vmImage: 'macos-12'
   steps:
   - task: CmdLine@2
     inputs:
       script: |
-        wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha16/premake-5.0.0-alpha16-linux.tar.gz
-        tar -xvf premake-5.0.0-alpha16-linux.tar.gz
+        wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha16/premake-5.0.0-alpha16-macosx.tar.gz
+        tar -xvf premake-5.0.0-alpha16-macosx.tar.gz
         sudo chmod a+x premake5
         sudo mv premake5 /usr/local/bin
-        ./build.sh clean
         ./build.sh
         ./build.sh release
       failOnStderr: true
