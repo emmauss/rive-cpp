@@ -22,5 +22,5 @@ steps:
   inputs:
     script: |
       dir
-      $(Build.SourcesDirectory)\premake\premake.exe vs2022
+      $(Build.SourcesDirectory)\premake\premake5.exe vs2022
     failOnStderr: true
