@@ -20,5 +20,7 @@ steps:
     failOnStderr: true
 - task: CmdLine@2
   inputs:
-    script: '$(Build.SourcesDirectory)/premake/premake.exe vs2022'
+    script: |
+      dir
+      $(Build.SourcesDirectory)\premake\premake.exe vs2022
     failOnStderr: true
