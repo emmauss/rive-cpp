@@ -8,6 +8,61 @@ trigger:
 - master
 
 jobs:
+- job: Windows
+  pool:
+    vmImage: windows-2022
+
+  steps:
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        wget https://github.com/premake/premake-core/releases/download/v5.0.0-beta1/premake-5.0.0-beta1-windows.zip -OutFile $(Build.SourcesDirectory)/premake.zip
+        Expand-Archive -Force premake.zip $(Build.SourcesDirectory)/premake/
+      failOnStderr: true
+  - task: CmdLine@2
+    inputs:
+      script: |
+        cd build
+        dir
+        $(Build.SourcesDirectory)\premake\premake5.exe vs2022
+      failOnStderr: true
+  - task: MSBuild@1
+    inputs:
+      solution: 'build/rive.sln'
+      msbuildArchitecture: 'x64'
+      configuration: 'Release'
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        New-Item $(Build.SourcesDirectory)\runtimes\win-x64\native -ItemType Directory
+        Copy-Item $(Build.SourcesDirectory)\build\windows\bin\release\rive.dll -Destination $(Build.SourcesDirectory)\runtimes\win-x64\native\rive.dll
+  - task: MSBuild@1
+    inputs:
+      solution: 'build/rive.sln'
+      msbuildArchitecture: 'x86'
+      configuration: 'Release'
+  - task: PowerShell@2
+    inputs:
+      targetType: 'inline'
+      script: |
+        New-Item $(Build.SourcesDirectory)\runtimes\win-x86\native -ItemType Directory
+        Copy-Item $(Build.SourcesDirectory)\build\windows\bin\release\rive.dll -Destination $(Build.SourcesDirectory)\runtimes\win-x86\native\rive.dll
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.BinariesDirectory)\runtimes'
+      includeRootFolder: true
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+      verbose: true
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/'
+      artifact: 'Build Libs'
+      publishLocation: 'pipeline'
+
 - job: Linux
   pool:
     vmImage: 'ubuntu-22.04'
@@ -36,3 +91,61 @@ jobs:
       targetPath: '$(Build.ArtifactStagingDirectory)/'
       artifact: 'Build Libs'
       publishLocation: 'pipeline'
+
+- job: MacOS
+  pool:
+    vmImage: 'macos-12'
+  steps:
+  - task: CmdLine@2
+    inputs:
+      script: |
+        wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha16/premake-5.0.0-alpha16-macosx.tar.gz
+        tar -xvf premake-5.0.0-alpha16-macosx.tar.gz
+        sudo chmod a+x premake5
+        sudo mv premake5 /usr/local/bin
+        ./build.sh release
+        mkdir -p $(Build.SourcesDirectory)/runtimes/osx/native
+        cp build/macosx/bin/release/librive.dylib $(Build.SourcesDirectory)/runtimes/osx/native/librive.so
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/runtimes'
+      includeRootFolder: true
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+      verbose: true
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/'
+      artifact: 'Build Libs'
+      publishLocation: 'pipeline'
+
+- job: Android
+  pool:
+    vmImage: 'ubuntu-22.04'
+  steps:
+  - task: CmdLine@2
+    inputs:
+      script: |
+        wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha16/premake-5.0.0-alpha16-linux.tar.gz
+        tar -xvf premake-5.0.0-alpha16-linux.tar.gz
+        sudo chmod a+x premake5
+        sudo mv premake5 /usr/local/bin
+        ./build.sh clean
+        ./build.sh -p android.x86 release
+        ./build.sh -p android.x64 release
+        ./build.sh -p android.arm release
+        ./build.sh -p android.arm64 release
+
+- job: iOS
+  pool:
+    vmImage: 'macos-12'
+  steps:
+  - task: CmdLine@2
+    inputs:
+      script: |
+        wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha16/premake-5.0.0-alpha16-macosx.tar.gz
+        tar -xvf premake-5.0.0-alpha16-macosx.tar.gz
+        sudo chmod a+x premake5
+        sudo mv premake5 /usr/local/bin
+        ./build.sh -p ios release
