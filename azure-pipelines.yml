@@ -25,7 +25,7 @@ jobs:
         cp build/linux/bin/release/librive.so $(Build.SourcesDirectory)/runtimes/linux-x64/native/librive.so
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(Build.BinariesDirectory)/runtimes'
+      rootFolderOrFile: '$(Build.SourcesDirectory)/runtimes'
       includeRootFolder: true
       archiveType: 'zip'
       archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
