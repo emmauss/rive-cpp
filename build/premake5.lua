@@ -38,12 +38,13 @@ WINDOWS_CLANG_CL_SUPPRESSED_WARNINGS = {
 
 project 'rive'
 do
-    kind 'StaticLib'
+    kind 'SharedLib'
     language 'C++'
     cppdialect 'C++17'
     toolset 'clang'
     targetdir '%{cfg.system}/bin/%{cfg.buildcfg}'
     objdir '%{cfg.system}/obj/%{cfg.buildcfg}'
+    staticruntime "off"
     includedirs {
         '../include',
         harfbuzz .. '/src',
