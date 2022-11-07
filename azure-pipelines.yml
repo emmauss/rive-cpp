@@ -18,7 +18,7 @@ jobs:
       targetType: 'inline'
       script: |
         wget https://github.com/premake/premake-core/releases/download/v5.0.0-beta1/premake-5.0.0-beta1-windows.zip -OutFile $(Build.SourcesDirectory)/premake.zip
-        Expand-Archive -Force premake.zip $(Build.SourcesDirectory)/premake/
+        Expand-Archive -Force premake.zip $(Build.SourcesDirectory)/build/
       failOnStderr: true
   - task: CmdLine@2
     inputs:
@@ -35,7 +35,7 @@ jobs:
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
-      script: 'Copy-Item $(Build.SourcesDirectory)\windows\bin\release\rive.dll -Destination $(Build.SourcesDirectory)\runtimes\win-x64\native\rive.dll'
+      script: 'Copy-Item $(Build.SourcesDirectory)\build\windows\bin\release\rive.dll -Destination $(Build.SourcesDirectory)\runtimes\win-x64\native\rive.dll'
   - task: MSBuild@1
     inputs:
       solution: 'build/rive.sln'
@@ -44,4 +44,4 @@ jobs:
   - task: PowerShell@2
     inputs:
       targetType: 'inline'
-      script: 'Copy-Item $(Build.SourcesDirectory)\windows\bin\release\rive.dll -Destination $(Build.SourcesDirectory)\runtimes\win-x86\native\rive.dll'
+      script: 'Copy-Item $(Build.SourcesDirectory)\build\windows\bin\release\rive.dll -Destination $(Build.SourcesDirectory)\runtimes\win-x86\native\rive.dll'
