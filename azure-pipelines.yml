@@ -21,9 +21,8 @@ jobs:
         sudo mv premake5 /usr/local/bin
         ./build.sh clean
         ./build.sh release
-        ls -l build/linux
-        ls -l build/linux/bin/release/
-        cp linux/bin/release/librive.so $(Build.SourcesDirectory)/runtimes/linux-x64/native/librive.so
+        mkdir -p $(Build.SourcesDirectory)/runtimes/linux-x64/native
+        cp build/linux/bin/release/librive.so $(Build.SourcesDirectory)/runtimes/linux-x64/native/librive.so
   - task: ArchiveFiles@2
     inputs:
       rootFolderOrFile: '$(Build.BinariesDirectory)/runtimes'
