@@ -19,5 +19,4 @@ jobs:
         tar -xvf premake-5.0.0-alpha16-macosx.tar.gz
         sudo chmod a+x premake5
         sudo mv premake5 /usr/local/bin
-        ./build.sh
         ./build.sh -p ios release
