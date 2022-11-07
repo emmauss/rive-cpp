@@ -45,3 +45,16 @@ jobs:
     inputs:
       targetType: 'inline'
       script: 'Copy-Item $(Build.SourcesDirectory)\build\windows\bin\release\rive.dll -Destination $(Build.SourcesDirectory)\runtimes\win-x86\native\rive.dll'
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.BinariesDirectory)\runtimes'
+      includeRootFolder: true
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+      verbose: true
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)/'
+      artifact: 'Build Libs'
+      publishLocation: 'pipeline'
