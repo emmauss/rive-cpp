@@ -8,20 +8,16 @@ trigger:
 - master
 
 jobs:
-
-- job: Android
+- job: iOS
   pool:
-    vmImage: 'ubuntu-22.04'
+    vmImage: 'macos-latest'
   steps:
   - task: CmdLine@2
     inputs:
       script: |
-        wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha16/premake-5.0.0-alpha16-linux.tar.gz
-        tar -xvf premake-5.0.0-alpha16-linux.tar.gz
+        wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha16/premake-5.0.0-alpha16-macosx.tar.gz
+        tar -xvf premake-5.0.0-alpha16-macosx.tar.gz
         sudo chmod a+x premake5
         sudo mv premake5 /usr/local/bin
-        ./build.sh clean
-        ./build.sh -p android.x86 release
-        ./build.sh -p android.x64 release
-        ./build.sh -p android.arm release
-        ./build.sh -p android.arm64 release
+        ./build.sh
+        ./build.sh -p ios release
