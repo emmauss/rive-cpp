@@ -18,7 +18,7 @@ jobs:
       targetType: 'inline'
       script: |
         wget https://github.com/premake/premake-core/releases/download/v5.0.0-beta1/premake-5.0.0-beta1-windows.zip -OutFile $(Build.SourcesDirectory)/premake.zip
-        Expand-Archive -Force premake.zip $(Build.SourcesDirectory)/build/
+        Expand-Archive -Force premake.zip $(Build.SourcesDirectory)/premake/
       failOnStderr: true
   - task: CmdLine@2
     inputs:
