@@ -60,7 +60,7 @@ jobs:
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)/'
-      artifact: 'Build Libs'
+      artifact: 'Build Libs Windows'
       publishLocation: 'pipeline'
 
 - job: Linux
@@ -89,7 +89,7 @@ jobs:
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)/'
-      artifact: 'Build Libs'
+      artifact: 'Build Libs Linux'
       publishLocation: 'pipeline'
 
 - job: MacOS
@@ -117,7 +117,7 @@ jobs:
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)/'
-      artifact: 'Build Libs'
+      artifact: 'Build Libs OSX'
       publishLocation: 'pipeline'
 
 - job: Android
