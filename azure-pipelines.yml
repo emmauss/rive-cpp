@@ -21,4 +21,4 @@ jobs:
         sudo chmod a+x premake5
         sudo mv premake5 /usr/local/bin
         ./build.sh clean
-        ./build.sh -p android release
+        ./build.sh -p android.all release
